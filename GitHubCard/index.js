@@ -6,15 +6,31 @@ import axios from 'axios';
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-axios.get(`https://api.github.com/users/hickman-gretchyn`)
-  .then(resp => {
-    console.log(resp);
 
+const followersArray = [
+  "gretchyn-hickman",
+  "CRHarding",
+  "RealSadLemon",
+  "keirankozlowski",
+  "jzkime",
+  "Abargallo19",
+];
+
+function gitUsers(user){
+  axios.get(`https://api.github.com/users/${user}`)
+  .then(resp => {
+    const user = githubCard(resp.data);
+    const cards = document.querySelector(".cards");
+    cards.appendChild(user);
   })
   .catch(err => console.error(err))
+};
+ for (let i = 0; i < followersArray.length; i++) {
+   gitUsers(followersArray[i]);
+ }
 
 
-  
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -39,7 +55,48 @@ axios.get(`https://api.github.com/users/hickman-gretchyn`)
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+function githubCard(gitInfo) {
+  const gitDiv = document.createElement('div');
+  gitDiv.classList.add('card');
+  const gitIMG = document.createElement('img');
+  gitIMG.src = gitInfo.avatar_url;
+  //placeholder
+  const infoDiv = document.createElement('div');
+  infoDiv.classList.add('card-info');
+  const infoTitle = document.createElement('h3');
+  infoTitle.textContent = gitInfo.name;
+  const user = document.createElement('p');
+  user.textContent = gitInfo.login;
+  const location = document.createElement("p");
+  location.textContent = gitInfo.location;
+  //placeholder
+  const profile = document.createElement("p");
+  profile.textContent = 'Profile:'
+  const profileLink = document.createElement('a');
+  profileLink.href = gitInfo.html_url;
+  profileLink.textContent = ('Profile Here')
+  profile.appendChild(profileLink);
+  //placeholder
+  const followers = document.createElement("p");
+  followers.textContent = (`Followers: ${gitInfo.followers}`);
+  const following = document.createElement("p");
+  following.textContent = (`Following: ${gitInfo.following}`);
+  const bio = document.createElement("p");
+  bio.textContent = gitInfo.bio;
+//placeholder
+  infoDiv.appendChild(infoTitle);
+  infoDiv.appendChild(user);
+  infoDiv.appendChild(location);
+  infoDiv.appendChild(profile);
+  infoDiv.appendChild(followers);
+  infoDiv.appendChild(following);
+  infoDiv.appendChild(bio);
+  //placeholder
+  gitDiv.appendChild(gitIMG);
+  gitDiv.appendChild(infoDiv);
+  return gitDiv;
+}
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -61,6 +118,7 @@ const followersArray = [];
     </div>
 */
 
+
 /*
   List of LS Instructors Github username's:
     tetondan
@@ -69,3 +127,4 @@ const followersArray = [];
     luishrd
     bigknell
 */
+//I'm going to use my own thanxx
